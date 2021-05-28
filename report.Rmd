@@ -1,0 +1,87 @@
+---
+title: "COVID 19 Report"
+author:
+- familyname: Zhang
+  othernames: Lintian
+  address: Monash Universtiy
+  email: ltzha1@student.monash.edu
+  correspondingauthor: true
+  qualifications:  Bachelor of Accounting
+- familyname: Widjaya
+  othernames: Arthur Andersen
+  address: Monash University
+  email: awid0001@student,monash.edu
+  correnpondingauthor: true
+  qualifications: Bachelor of Accounting
+- familyname: Wang
+  othernames: Hanchen
+  address: Monash University
+  email: hwan0143@student.monash.edu
+  correspondingauthor: true
+  qualifications:  Bachelor of Finance
+- familyname: Zou
+  othernames: Ying
+  address: Monash University
+  email: yzou0014@student.monash.edu
+  correspondingauthor: true
+  qualifications: Bachelor of Economics
+department: Team Amazing
+organization: Australian Government COVID19
+bibliography: references.bib
+biblio-style: authoryear-comp
+linestretch: 1.5
+output:
+  bookdown::pdf_document2:
+    template: monashreport2.tex
+    fig_caption: yes
+    fig_height: 5
+    fig_width: 8
+    includes:
+      in_header: preamble.tex
+    keep_tex: yes
+    number_sections: yes
+    citation_package: biblatex
+    toc: false
+  always_allow_html: true
+header-includes:
+ \usepackage{float}
+ \floatplacement{figure}{H}
+ \floatplacement{table}{H}
+---
+
+```{r , echo = FALSE, message = FALSE, warning = FALSE}
+# Libraries
+
+library(tidyverse)
+library(readr)
+library(kableExtra)
+library(stargazer)
+library(PerformanceAnalytics)
+library(tidyverse)
+library(bookdown)
+library(plotly)
+
+```
+
+
+# Introduction
+
+
+
+\section*{Total cases in Australia}
+
+
+\section*{Recovery}
+
+
+
+\section*{Transmission sources of daily cases in Australia}
+
+
+\section*{Vaccination in Australia}
+
+
+
+# Conclusion
+
+
