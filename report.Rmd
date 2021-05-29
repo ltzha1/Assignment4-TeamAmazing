@@ -137,16 +137,16 @@ scale_y_continuous(labels = scales::label_number_si()) + ggtitle("Daily cases in
 
 
 \section*{Transmission sources of daily cases in Australia}
-```{r message=FALSE}
+```{r message=FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 transmission <- read_csv("Data/National.csv")
 ```
 
-```{r}
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 transmission <- transmission %>% 
   mutate(date = as.Date(date, '%d-%b'))
 ```
 
-```{r}
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 transmission_long <- transmission %>% 
   mutate(date = as.Date(date, '%d-%b')) %>% 
   pivot_longer(cols = -date,
@@ -157,7 +157,7 @@ transmission_long$date <- factor(transmission_long$date, ordered = T)
  
 ```
 
-```{r tra, fig.cap = "Transmission sources of daily cases 20 April 2021 - 18 May 2021", fig.align = 'center', fig.width=10, echo=FALSE, warning=FALSE, message=FALSE}
+```{r tra, fig.cap = "Transmission sources of daily cases 20 April 2021 - 18 May 2021", fig.align = 'center', eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
   
 c <- ggplot(transmission_long, aes(x = date,
 y = Count, fill = source)) +
