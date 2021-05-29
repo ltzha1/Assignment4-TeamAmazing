@@ -138,14 +138,14 @@ scale_y_continuous(labels = scales::label_number_si()) + ggtitle("Daily cases in
 \section*{Recovery}
 
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, , eval=TRUE, echo=FALSE}
 rec <- read_csv(here::here("Data/recovery.csv")) 
 
 rec <- rec[1:292,]
 ```
 
 
-```{r}
+```{r, warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE }
 rec_clean <- rec %>% 
   mutate(date = as.Date(date, '%d-%b')) %>% 
   mutate(date = str_replace_all(date, "2021", "2020")) %>% 
@@ -159,7 +159,7 @@ rec_clean[is.na(rec_clean)] <- 0
 
 # Recovery count
 
-```{r}
+```{r, warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE }
 
 rec_tidy <-  rec_clean %>% 
   filter(str_detect(date, "-01"))
@@ -181,14 +181,15 @@ rec_plot <- rec_tab %>%
 
 rec_plot
 ```
+
 ## Analysis 
 
-Figure\@ref(fig:figrec1) shows that the number of recoveries from 2020.3 to 2021.5. It is not hard to find there was a slow climb before 2020.07(248918), after which a double recoveries appeared which is referred to the focus and good care on COVID-19 among countries. Then the number kept constant with some fluctuation.
+Figure \@ref(fig:figrec1) shows that the number of recoveries from 2020.3 to 2021.5. It is not hard to find there was a slow climb before 2020.07(248918), after which a double recoveries appeared which is referred to the focus and good care on COVID-19 among countries. Then the number kept constant with some fluctuation.
 
 
 # Recovery Rate
 
-```{r}
+```{r, warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE }
 rec_rate_tab <- rec_clean %>% 
   group_by(date) %>% 
   summarise(rec_rate = Recoveries/(Recoveries + `Active Cases`))
@@ -209,12 +210,13 @@ rec_rate_plot <- rec_rate_tab %>%
 
 rec_rate_plot
 ```
+
 ## Analysis
 
-Figure\@ref(fig:figrec2) shows that the total recovery rate had an increase before 2020.6(95%), and a downward trend happened due to the decreasing active cases as well as increasing recoveries. However, the recovery rate continued to climbing from 2020.8(71%) and reached at almost 99% after 2020.11 until now.The main reason that the rate kept increasing steep is that the government did control the virus situation to some extend, the less active cases, the higher rate.
+Figure \@ref(fig:figrec2) shows that the total recovery rate had an increase before 2020.6(95%), and a downward trend happened due to the decreasing active cases as well as increasing recoveries. However, the recovery rate continued to climbing from 2020.8(71%) and reached at almost 99% after 2020.11 until now.The main reason that the rate kept increasing steep is that the government did control the virus situation to some extend, the less active cases, the higher rate.
 
 # Recovery-death ratio
-```{r}
+```{r, warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE }
 ratio_tab <- rec_clean %>% 
   group_by(date) %>% 
   summarise(rec_Death_ratio = Recoveries/Deaths)
@@ -285,21 +287,21 @@ Luckily, there are no more local community spread in Australia from 20 April 202
 
 \section*{Vaccination}
 
-## Vaccination Rates
+# Vaccination Rates
 ```{r}
 library(hrbrthemes)
 vaccine <- read_csv(here::here("Data/Total doses.csv"))
 ```
 
-```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE} 
- vaccine_long <- vaccine %>% 
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ vaccine_long <- vaccine %>%
   mutate(date=as.Date(date,'%d-%b'))
 dates <- unique(sort(vaccine_long$date))
 vaccine_long$date <- factor(vaccine_long$date,ordered=T)
 ```
 
-```{r FigRefplot, fig.cap = "Vaccination Rates Over Time", warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE }
-  ggplot(vaccine_long,
+```{r FigRefplot,fig.width=500, fig.cap = "Vaccination Rates Over Time", warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=15}
+   ggplot(vaccine_long,
          aes(x=date,y=`Per 100 people (right axis)`))+
   geom_point(size=2,alpha=0.3,color='#b3699f')+
   ylab("vaccination Rates(per 100 people)")+
@@ -307,25 +309,29 @@ vaccine_long$date <- factor(vaccine_long$date,ordered=T)
   theme(plot.title = element_text(h = 0.5))+
   scale_color_manual(values = colors)+
     theme_ipsum() + theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))
+
 ```
 
-
+## Analysis
 
 The graph \@ref(fig:Figplot) shows a general upward trend in vaccination, with the vaccination rate starting to show a faster increase in early April. The vaccination rate grows faster and faster over time. The number of vaccinations reached 12.39% on May 18. The increase in vaccination rates illustrates the importance the government places on the outbreak.
 
 
-## Vaccination Coverage
+# Vaccination Coverage
 
-```{r FigRefz, fig.align = "center",fig.cap = "Increase in vaccination coverage over time",message=FALSE, warning=FALSE}
-ggplot(vaccine_long, 
+```{r FigRefz, fig.align = "center",fig.cap = "Increase in vaccination coverage over time",message=FALSE, warning=FALSE, fig.height=10, fig.width=15}
+ggplot(vaccine_long,
        aes(x = date,
            y = `Total doses (left axis)`)) +
   geom_col()+
     xlab("Date") +
     ylab("Vaccine") +
-    theme_ipsum() + theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))+ theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) 
+    theme_ipsum() + theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))+ theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))
+
 ```
 
+
+## Analysis
 
 We can see from the graph \@ref(fig:FigRefz) that the number of inoculations continues to grow, from 20 people on February 21 to 3,183,324 people on May 18. The rate of growth has been accelerating since the beginning of April.
 

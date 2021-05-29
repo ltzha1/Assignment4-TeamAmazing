@@ -29,46 +29,6 @@
 \geometry{a4paper, centering, text={16cm,24cm}}
 \usepackage[style=authoryear-comp,]{biblatex}
 \addbibresource{references.bib}
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 % Fix footnotes in tables (requires footnote package)
 \IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
@@ -419,73 +379,36 @@ Figure \ref{fig:figref1} showing the highest to lowest cases of COVID 19 the X a
 
 \section*{Recovery}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{rec }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(here}\SpecialCharTok{::}\FunctionTok{here}\NormalTok{(}\StringTok{"Data/recovery.csv"}\NormalTok{)) }
-
-\NormalTok{rec }\OtherTok{\textless{}{-}}\NormalTok{ rec[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{292}\NormalTok{,]}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{rec\_clean }\OtherTok{\textless{}{-}}\NormalTok{ rec }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{date =} \FunctionTok{as.Date}\NormalTok{(date, }\StringTok{\textquotesingle{}\%d{-}\%b\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{date =} \FunctionTok{str\_replace\_all}\NormalTok{(date, }\StringTok{"2021"}\NormalTok{, }\StringTok{"2020"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{date =} \FunctionTok{as.Date}\NormalTok{(date, }\StringTok{\textquotesingle{}\%Y{-}\%m{-}\%d\textquotesingle{}}\NormalTok{)) }
-
-\NormalTok{  date }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(}\FunctionTok{sort}\NormalTok{(rec}\SpecialCharTok{$}\NormalTok{date))}
-\NormalTok{  rec}\SpecialCharTok{$}\NormalTok{date }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(rec}\SpecialCharTok{$}\NormalTok{date, }\AttributeTok{ordered =}\NormalTok{ T)}
-  
-\NormalTok{rec\_clean[}\FunctionTok{is.na}\NormalTok{(rec\_clean)] }\OtherTok{\textless{}{-}} \DecValTok{0}
-\end{Highlighting}
-\end{Shaded}
-
 \hypertarget{recovery-count}{%
 \section{Recovery count}\label{recovery-count}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{rec\_tidy }\OtherTok{\textless{}{-}}\NormalTok{  rec\_clean }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{filter}\NormalTok{(}\FunctionTok{str\_detect}\NormalTok{(date, }\StringTok{"{-}01"}\NormalTok{))}
-
-\NormalTok{rec\_tab }\OtherTok{\textless{}{-}}\NormalTok{ rec\_tidy  }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(date) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(Recoveries)}
-\end{Highlighting}
-\end{Shaded}
-
+\begin{figure}
+\centering
 \includegraphics{report_files/figure-latex/figrec1-1.pdf}
-\#\# Analysis
+\caption{\label{fig:figrec1}Recovery number in Australia in 2020}
+\end{figure}
 
-Figure\ref{fig:figrec1} shows that the number of recoveries from 2020.3 to 2021.5. It is not hard to find there was a slow climb before 2020.07(248918), after which a double recoveries appeared which is referred to the focus and good care on COVID-19 among countries. Then the number kept constant with some fluctuation.
+\hypertarget{analysis-3}{%
+\subsection{Analysis}\label{analysis-3}}
+
+Figure \ref{fig:figrec1} shows that the number of recoveries from 2020.3 to 2021.5. It is not hard to find there was a slow climb before 2020.07(248918), after which a double recoveries appeared which is referred to the focus and good care on COVID-19 among countries. Then the number kept constant with some fluctuation.
 
 \hypertarget{recovery-rate}{%
 \section{Recovery Rate}\label{recovery-rate}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{rec\_rate\_tab }\OtherTok{\textless{}{-}}\NormalTok{ rec\_clean }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(date) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{rec\_rate =}\NormalTok{ Recoveries}\SpecialCharTok{/}\NormalTok{(Recoveries }\SpecialCharTok{+} \StringTok{\textasciigrave{}}\AttributeTok{Active Cases}\StringTok{\textasciigrave{}}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
+\begin{figure}
+\centering
 \includegraphics{report_files/figure-latex/figrec2-1.pdf}
-\#\# Analysis
+\caption{\label{fig:figrec2}Recovery rate in Australia in 2020}
+\end{figure}
 
-Figure\ref{fig:figrec2} shows that the total recovery rate had an increase before 2020.6(95\%), and a downward trend happened due to the decreasing active cases as well as increasing recoveries. However, the recovery rate continued to climbing from 2020.8(71\%) and reached at almost 99\% after 2020.11 until now.The main reason that the rate kept increasing steep is that the government did control the virus situation to some extend, the less active cases, the higher rate.
+\hypertarget{analysis-4}{%
+\subsection{Analysis}\label{analysis-4}}
+
+Figure \ref{fig:figrec2} shows that the total recovery rate had an increase before 2020.6(95\%), and a downward trend happened due to the decreasing active cases as well as increasing recoveries. However, the recovery rate continued to climbing from 2020.8(71\%) and reached at almost 99\% after 2020.11 until now.The main reason that the rate kept increasing steep is that the government did control the virus situation to some extend, the less active cases, the higher rate.
 
 \hypertarget{recovery-death-ratio}{%
 \section{Recovery-death ratio}\label{recovery-death-ratio}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ratio\_tab }\OtherTok{\textless{}{-}}\NormalTok{ rec\_clean }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(date) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{rec\_Death\_ratio =}\NormalTok{ Recoveries}\SpecialCharTok{/}\NormalTok{Deaths)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{figure}
 \centering
@@ -493,8 +416,8 @@ Figure\ref{fig:figrec2} shows that the total recovery rate had an increase befor
 \caption{\label{fig:figrec3}Recovery-Death ratio in Australia in 2020}
 \end{figure}
 
-\hypertarget{analysis-3}{%
-\subsection{Analysis}\label{analysis-3}}
+\hypertarget{analysis-5}{%
+\subsection{Analysis}\label{analysis-5}}
 
 Figure\ref{fig:figrec3} demonstrates the ratio of total recoveries and total deaths, which it kept zero in the earlier Mar because An early outbreak in March left the recovery rate at zero and the death rate rising. As the ratio continued rising until July(70), then it started dropping which means that as the active cases decreased, the recoveries number became less.
 
@@ -514,60 +437,6 @@ The figure \ref{fig:tra} indicates that the most of transmissions were from over
 Luckily, there are no more local community spread in Australia from 20 April 2021 to 18 May 2021.
 
 \section*{Vaccination}
-
-\hypertarget{vaccination-rates}{%
-\subsection{Vaccination Rates}\label{vaccination-rates}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(hrbrthemes)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: package 'hrbrthemes' was built under R version 4.0.5
-\end{verbatim}
-
-\begin{verbatim}
-## NOTE: Either Arial Narrow or Roboto Condensed fonts are required to use these themes.
-\end{verbatim}
-
-\begin{verbatim}
-##       Please use hrbrthemes::import_roboto_condensed() to install Roboto Condensed and
-\end{verbatim}
-
-\begin{verbatim}
-##       if Arial Narrow is not on your system, please see https://bit.ly/arialnarrow
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{vaccine }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(here}\SpecialCharTok{::}\FunctionTok{here}\NormalTok{(}\StringTok{"Data/Total doses.csv"}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## -- Column specification --------------------------------------------------------
-## cols(
-##   date = col_character(),
-##   `Total doses (left axis)` = col_number(),
-##   `Per 100 people (right axis)` = col_double()
-## )
-\end{verbatim}
-
-\hypertarget{r-figrefplot-fig.cap-vaccination-rates-over-time-warning-false-evaltrue-echofalse-warningfalse-messagefalse-ggplotvaccine_long-aesxdateyper-100-people-right-axis-geom_pointsize2alpha0.3colorb3699f-ylabvaccination-ratesper-100-people-xlabdate-themeplot.title-element_texth-0.5-scale_color_manualvalues-colors-theme_ipsum-themeaxis.text.x-element_textangle-90-vjust-1-hjust-1}{%
-\section{\texorpdfstring{\texttt{\{r\ FigRefplot,\ fig.cap\ =\ "Vaccination\ Rates\ Over\ Time",\ warning\ =\ FALSE,\ eval=TRUE,\ echo=FALSE,\ warning=FALSE,\ message=FALSE\ \}\ \#\ \ \ ggplot(vaccine\_long,\ \#\ \ \ \ \ \ \ \ \ \ aes(x=date,y=\textasciigrave{}Per\ 100\ people\ (right\ axis)\textasciigrave{}))+\ \#\ \ \ geom\_point(size=2,alpha=0.3,color=\textquotesingle{}\#b3699f\textquotesingle{})+\ \#\ \ \ ylab("vaccination\ Rates(per\ 100\ people)")+\ \#\ \ \ xlab("Date")+\ \#\ \ \ theme(plot.title\ =\ element\_text(h\ =\ 0.5))+\ \#\ \ \ scale\_color\_manual(values\ =\ colors)+\ \#\ \ \ \ \ theme\_ipsum()\ +\ theme(axis.text.x\ =\ element\_text(angle\ =\ 90,\ vjust\ =\ 1,\ hjust\ =\ 1))\ \#}}{\{r FigRefplot, fig.cap = "Vaccination Rates Over Time", warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE \} \#   ggplot(vaccine\_long, \#          aes(x=date,y=`Per 100 people (right axis)`))+ \#   geom\_point(size=2,alpha=0.3,color='\#b3699f')+ \#   ylab("vaccination Rates(per 100 people)")+ \#   xlab("Date")+ \#   theme(plot.title = element\_text(h = 0.5))+ \#   scale\_color\_manual(values = colors)+ \#     theme\_ipsum() + theme(axis.text.x = element\_text(angle = 90, vjust = 1, hjust = 1)) \#}}\label{r-figrefplot-fig.cap-vaccination-rates-over-time-warning-false-evaltrue-echofalse-warningfalse-messagefalse-ggplotvaccine_long-aesxdateyper-100-people-right-axis-geom_pointsize2alpha0.3colorb3699f-ylabvaccination-ratesper-100-people-xlabdate-themeplot.title-element_texth-0.5-scale_color_manualvalues-colors-theme_ipsum-themeaxis.text.x-element_textangle-90-vjust-1-hjust-1}}
-
-The graph \ref{fig:Figplot} shows a general upward trend in vaccination, with the vaccination rate starting to show a faster increase in early April. The vaccination rate grows faster and faster over time. The number of vaccinations reached 12.39\% on May 18. The increase in vaccination rates illustrates the importance the government places on the outbreak.
-
-\hypertarget{vaccination-coverage}{%
-\subsection{Vaccination Coverage}\label{vaccination-coverage}}
-
-\hypertarget{r-figrefz-fig.align-centerfig.cap-increase-in-vaccination-coverage-over-timemessagefalse-warningfalse-ggplotvaccine_long-aesx-date-y-total-doses-left-axis-geom_col-xlabdate-ylabvaccine-theme_ipsum-themeaxis.text.x-element_textangle-90-vjust-1-hjust-1-themeaxis.text.x-element_textangle-90-vjust-1-hjust-1}{%
-\section{\texorpdfstring{\texttt{\{r\ FigRefz,\ fig.align\ =\ "center",fig.cap\ =\ "Increase\ in\ vaccination\ coverage\ over\ time",message=FALSE,\ warning=FALSE\}\ \#\ ggplot(vaccine\_long,\ \ \#\ \ \ \ \ \ \ \ aes(x\ =\ date,\ \#\ \ \ \ \ \ \ \ \ \ \ \ y\ =\ \textasciigrave{}Total\ doses\ (left\ axis)\textasciigrave{}))\ +\ \#\ \ \ geom\_col()+\ \#\ \ \ \ \ xlab("Date")\ +\ \#\ \ \ \ \ ylab("Vaccine")\ +\ \#\ \ \ \ \ theme\_ipsum()\ +\ theme(axis.text.x\ =\ element\_text(angle\ =\ 90,\ vjust\ =\ 1,\ hjust\ =\ 1))+\ theme(axis.text.x\ =\ element\_text(angle\ =\ 90,\ vjust\ =\ 1,\ hjust\ =\ 1))\ \#}}{\{r FigRefz, fig.align = "center",fig.cap = "Increase in vaccination coverage over time",message=FALSE, warning=FALSE\} \# ggplot(vaccine\_long,  \#        aes(x = date, \#            y = `Total doses (left axis)`)) + \#   geom\_col()+ \#     xlab("Date") + \#     ylab("Vaccine") + \#     theme\_ipsum() + theme(axis.text.x = element\_text(angle = 90, vjust = 1, hjust = 1))+ theme(axis.text.x = element\_text(angle = 90, vjust = 1, hjust = 1)) \#}}\label{r-figrefz-fig.align-centerfig.cap-increase-in-vaccination-coverage-over-timemessagefalse-warningfalse-ggplotvaccine_long-aesx-date-y-total-doses-left-axis-geom_col-xlabdate-ylabvaccine-theme_ipsum-themeaxis.text.x-element_textangle-90-vjust-1-hjust-1-themeaxis.text.x-element_textangle-90-vjust-1-hjust-1}}
-
-We can see from the graph \ref{fig:FigRefz} that the number of inoculations continues to grow, from 20 people on February 21 to 3,183,324 people on May 18. The rate of growth has been accelerating since the beginning of April.
 
 \hypertarget{conclusion-and-references}{%
 \section{Conclusion and References}\label{conclusion-and-references}}
