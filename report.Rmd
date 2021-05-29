@@ -75,7 +75,7 @@ library(bookdown)
 
 
 \section*{Transmission sources of daily cases in Australia}
-```{r}
+```{r message=FALSE}
 transmission <- read_csv("Data/National.csv")
 ```
 
@@ -95,7 +95,7 @@ transmission_long$date <- factor(transmission_long$date, ordered = T)
  
 ```
 
-```{r transmission, fig.align = 'center', fig.width=10, echo=FALSE}
+```{r tra, fig.cap = "Transmission sources of daily cases 20 April 2021 - 18 May 2021", fig.align = 'center', fig.width=10, echo=FALSE, warning=FALSE, message=FALSE}
   
 c <- ggplot(transmission_long, aes(x = date,
 y = Count, fill = source)) +
@@ -103,7 +103,6 @@ y = Count, fill = source)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
 expand_limits(x = c(0, NA), y = c(0, NA)) + 
 scale_y_continuous(labels = scales::label_number_si())+
-  ggtitle("Transmission sources of daily cases 20 April 2021 - 18 May 2020") +
   labs(x= "Date", 
        y = "Number of cases")
 
@@ -111,11 +110,9 @@ c
 ```
 
 
-The figure \@ref(fig:transmission) indicates that the most of transmissions were from overseas. Especially, there were more than 35 cases from overseas recorded and one case was due to the interstate travel in 23 April. Only One case is under investigation which has been recorded in 5 May.
+The figure \@ref(fig:tra) indicates that the most of transmissions were from overseas. Especially, there were more than 35 cases from overseas recorded and one case was due to the interstate travel in 23 April. Only One case is under investigation which has been recorded in 5 May.
 
 Luckily, there are no more local community spread in Australia from 20 April 2021 to 18 May 2021.
-
-
 
 
 
