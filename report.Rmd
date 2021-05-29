@@ -51,7 +51,6 @@ header-includes:
 
 ```{r , echo = FALSE, message = FALSE, warning = FALSE}
 
-
 library(tidyverse)
 library(readr)
 library(kableExtra)
@@ -59,19 +58,82 @@ library(stargazer)
 library(PerformanceAnalytics)
 library(tidyverse)
 library(bookdown)
-<<<<<<< HEAD
-=======
-
->>>>>>> Hanchen_Wang
 
 ```
 
 
 # Introduction
 
+[Covid19 data Australia](https://www.covid19data.com.au) is the source where we get all the data. We are analyzing the cases as in 18 of May 2021 where we download all the data needed. We divided our analysis to 4 part, firstly we are going to talk about the total cases within the last 28 days in Australia, secondly we are going to talk about the cases we also analyze the how many people recover due to the disease, after looking at the transmission sources in Australia, and lastly we talked about the vaccination program which starts from February to 18 May.
+
+The purpose of this report is to analyze how well Australia is handling the pandemic, we decided to do this because we all aware that the pandemic is keep on heating from time to time so it's very important for us international students who is studying in Australia be aware of what is happening in Australia.
 
 
 \section*{Total cases in Australia}
+
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+covid <- read_csv("Data/All.csv")
+```
+
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+covid_long <- covid %>% 
+  mutate(date = as.Date(date, '%d-%b')) %>% 
+  pivot_longer(cols = -date,
+             names_to = "state",
+             values_to = "Count") 
+  dates <- unique(sort(covid_long$date)) 
+  covid_long$date <- factor(covid_long$date, ordered = T)
+```
+
+# Total COVID 19 cases from each state in the last 28 days
+
+```{r table1, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+table <- covid_long %>% 
+  group_by(state) %>% 
+  summarise(total = sum(Count)) %>% 
+  arrange(desc(total))
+
+knitr::kable(table, caption = "Total cases in 28 days") %>% 
+kable_classic(full_width = F, html_font = "Cambria")
+```
+
+## Analysis 
+
+table \@ref(tab:table1) shows the total number of COVID 19 cases from all the states in Australia in the last 28 days. It clearly shows that in the last 28 days New South Wales (NSW) has added the most number of cases with total of 211 cases. Compared to other states they only at 50's cases with Australian Capital Territory (ACT) and Tasmania (TAS) only added 1 and 0 cases. It reflects that NSW has been struggling. The data was downloaded as in 18 of May 2021, they really need to increase their attention in order to contain the virus outbreak. 
+
+# Highest and lowest COVID 19 cases in Australia 
+
+```{r, fig.width=10, figref1, fig.cap = "Highest and lowest COVID 19 cases in Australia", eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(covid_long,
+       aes(x = reorder(date, -Count),
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si())  +xlab("date") + ggtitle("Highest and lowest COVID 19 cases in Australia")
+
+```
+
+## Analysis 
+
+Figure \@ref(fig:figref1) showing the highest  to lowest cases of COVID 19 the X axis acts recorded the date on when the case was recorded. At glance at the 23 of April 2021 the day where Australia adds the higest total cases with NSW is the highest contributor, and the lowest cases was recorded at 14 May 2021.
+
+# COVID 19 cases in Australia in the last 28 days
+
+```{r figref2, fig.cap = "Daily cases in Australia in the last 28 days", eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ ggplot(covid_long,
+       aes(x = date,
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si()) + ggtitle("Daily cases in Australia in the last 28 days")
+```
+
+## Analysis 
+
+\@ref(fig:figref2) showing the COVID 19 cases trends from 16 of April to 18 of May 2021. During the first few weeks the cases has rises and reaches it's peak on the 22 April 2021. 2 days later it drops and suddenly there has been an increase again. But overall during the last 28 days Australia has shown a great way to contain the outbreak on the first week which showing the efficiency of the government rules and regulation. 
+
 
 \section*{Recovery}
 
@@ -160,7 +222,7 @@ ratio_tab <- rec_clean %>%
 
 ```
 
-<<<<<<< HEAD
+
 \section*{Transmission sources of daily cases in Australia}
 ```{r message=FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 transmission <- read_csv("Data/National.csv")
@@ -202,7 +264,7 @@ The figure \@ref(fig:tra) indicates that the most of transmissions were from ove
 Luckily, there are no more local community spread in Australia from 20 April 2021 to 18 May 2021.
 
 
-=======
+
 ```{r figrec3, fig.cap = "Recovery-Death ratio in Australia in 2020", eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 ratio_plot <- ratio_tab %>%
   ggplot(aes(x = date, y = rec_Death_ratio)) + 
@@ -215,7 +277,6 @@ ratio_plot <- ratio_tab %>%
 
 ratio_plot
 ```
->>>>>>> Hanchen_Wang
 
 
 ## Analysis
@@ -251,7 +312,6 @@ vaccine_long$date <- factor(vaccine_long$date,ordered=T)
 The graph \@ref(fig:Figplot) shows a general upward trend in vaccination, with the vaccination rate starting to show a faster increase in early April. The vaccination rate grows faster and faster over time. The number of vaccinations reached 12.39% on May 18. The increase in vaccination rates illustrates the importance the government places on the outbreak.
 
 
-
 ## Vaccination Coverage
 
 ```{r FigRefz, fig.align = "center",fig.cap = "Increase in vaccination coverage over time",message=FALSE, warning=FALSE}
@@ -268,4 +328,43 @@ ggplot(vaccine_long,
 We can see from the graph \@ref(fig:FigRefz) that the number of inoculations continues to grow, from 20 people on February 21 to 3,183,324 people on May 18. The rate of growth has been accelerating since the beginning of April.
 
 
+
+# Conclusion and References
+
+## Conclusion
+
+Given the analysis above, the number of the confirmed cases and their sources were very stable. Besides, with the high recovery rate and more people are taking the vaccines, it can be proved that the reactions Australian government made were effective.
+
+## Data
+
+COVID-19 in Australia. (2021). Retrieved 18 May 2021, from https://www.covid19data.com.au/
+
+
+## Software
+
+R Core Team (2020). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+  
+## Packages
+
+Alboukadel Kassambara (2020). ggpubr: 'ggplot2' Based Publication Ready Plots. R package version 0.4.0. https://CRAN.R-project.org/package=ggpubr
+
+Bob Rudis (2020). hrbrthemes: Additional Themes, Theme Components and Utilities for 'ggplot2'. R package version 0.8.0. https://CRAN.R-project.org/package=hrbrthemes
+
+C. Sievert. Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman and Hall/CRC Florida, 2020.
+
+Hadley Wickham and Jennifer Bryan (2019). readxl: Read Excel Files. R package version 1.3.1. https://CRAN.R-project.org/package=readxl
+  
+Hao Zhu (2021). kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R package version 1.3.4. https://CRAN.R-project.org/package=kableExtra
+
+Müller, K. (2020). here: A Simpler Way to Find Your Files. R package version 1.0.1. https://CRAN.R-project.org/package=here
+
+Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data. The R Journal 10 (1), 439-446, https://doi.org/10.32614/RJ-2018-009
+
+Richard Iannone, JJ Allaire and Barbara Borges (2020). flexdashboard: R Markdown Format for Flexible Dashboards. R package version 0.5.2. https://CRAN.R-project.org/package=flexdashboard
+
+Simon Garnier, Noam Ross, Robert Rudis, Antônio P. Camargo, Marco Sciaini, and Cédric Scherer (2021). Rvision - Colorblind-Friendly Color Maps for R. R package version 0.6.0.
+
+Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
+
+Yihui Xie (2021). bookdown: Authoring Books and Technical Documents with R Markdown. R package version 0.22.
 
