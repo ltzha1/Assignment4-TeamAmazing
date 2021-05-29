@@ -63,12 +63,68 @@ library(plotly)
 
 ```
 
+```{r}
+
+```
+
 
 # Introduction
 
 
 
 \section*{Total cases in Australia}
+
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+covid <- read_csv("Data/All.csv")
+```
+
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+covid_long <- covid %>% 
+  mutate(date = as.Date(date, '%d-%b')) %>% 
+  pivot_longer(cols = -date,
+             names_to = "state",
+             values_to = "Count") 
+  dates <- unique(sort(covid_long$date)) 
+  covid_long$date <- factor(covid_long$date, ordered = T)
+```
+
+# Total COVID 19 cases from each state in the last 28 days
+
+```{r table1, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+table <- covid_long %>% 
+  group_by(state) %>% 
+  summarise(total = sum(Count)) %>% 
+  arrange(desc(total))
+
+knitr::kable(table, caption = "Total cases in 28 days") %>% 
+kable_classic(full_width = F, html_font = "Cambria")
+```
+
+
+# Highest and lowest COVID 19 cases in Australia 
+
+```{r, fig.width=10, figref1, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(covid_long,
+       aes(x = reorder(date, -Count),
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si())  +xlab("date") + ggtitle("Highest and lowest COVID 19 cases in Australia")
+
+```
+
+# COVID 19 cases in Australia in the last 28 days
+
+```{r, figref2, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ ggplot(covid_long,
+       aes(x = date,
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si()) + ggtitle("Daily cases in Australia in the last 28 days")
+```
 
 
 \section*{Recovery}
