@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.2) (preloaded format=pdflatex 2021.5.28)  29 MAY 2021 09:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.2) (preloaded format=pdflatex 2021.5.28)  29 MAY 2021 10:38
 entering extended mode
 **./report.tex
 (report.tex
@@ -1246,7 +1246,7 @@ ction with package mdbch, on input line 305.
 Package mathdesign/mdbch Warning: Package 'amsfonts' shouldn't be used in conjo
 nction with package mdbch, on input line 305.
 
-<Figures/logo.jpg, id=19, 4015.0pt x 6022.5pt>
+<Figures/logo.jpg, id=31, 4015.0pt x 6022.5pt>
 File: Figures/logo.jpg Graphic file (type jpg)
 <use Figures/logo.jpg>
 Package pdftex.def Info: Figures/logo.jpg  used on input line 306.
@@ -1520,39 +1520,36 @@ LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
 (Font)              scaled to size 10.51207pt on input line 318.
 LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
 (Font)              scaled to size 10.51207pt on input line 318.
-<report_files/figure-latex/figref1-1.pdf, id=28, 722.7pt x 361.35pt>
+<report_files/figure-latex/figref1-1.pdf, id=41, 722.7pt x 361.35pt>
 File: report_files/figure-latex/figref1-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/figref1-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/figref1-1.pdf  used on input
- line 346.
+ line 353.
 (pdftex.def)             Requested size: 455.24826pt x 227.62413pt.
-<report_files/figure-latex/figref2-1.pdf, id=29, 578.16pt x 361.35pt>
+[2]
+<report_files/figure-latex/figref2-1.pdf, id=55, 578.16pt x 361.35pt>
 File: report_files/figure-latex/figref2-1.pdf Graphic file (type pdf)
 <use report_files/figure-latex/figref2-1.pdf>
 Package pdftex.def Info: report_files/figure-latex/figref2-1.pdf  used on input
- line 351.
+ line 367.
 (pdftex.def)             Requested size: 455.24165pt x 284.52603pt.
-[2 <./report_files/figure-latex/figref1-1.pdf>]
+[3 <./report_files/figure-latex/figref1-1.pdf>]
 
-LaTeX Warning: Empty bibliography on input line 359.
+LaTeX Warning: Empty bibliography on input line 382.
 
-
-Package caption Warning: Unused \captionsetup[figure] on input line 69.
-See the caption package documentation for explanation.
-
-[3 <./report_files/figure-latex/figref2-1.pdf>] (report.aux)
+[4 <./report_files/figure-latex/figref2-1.pdf>] (report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: BF78A43D54131ABB1EFC274DC435B5A7;1106.
+(rerunfilecheck)             Checksum: EC0E8A7A66B9A43071C2E25E99803EF7;1463.
 Package logreq Info: Writing requests to 'report.run.xml'.
 \openout1 = `report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 26026 strings out of 479331
- 432509 string characters out of 2856852
- 1173782 words of memory out of 3000000
- 42851 multiletter control sequences out of 15000+200000
- 501852 words of font info for 212 fonts, out of 3000000 for 9000
+ 26060 strings out of 479331
+ 432935 string characters out of 2856852
+ 1175057 words of memory out of 3000000
+ 42864 multiletter control sequences out of 15000+200000
+ 502528 words of font info for 222 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,14n,93p,1197b,808s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/arthu/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/ly1/texnansi.en
@@ -1565,9 +1562,9 @@ onts/type1/bitstrea/charter/bchr8a.pfb><C:/Users/arthu/AppData/Local/Programs/M
 iKTeX/fonts/type1/bitstrea/charter/bchri8a.pfb><C:/Users/arthu/AppData/Local/Pr
 ograms/MiKTeX/fonts/type1/bera/fvsb8a.pfb><C:/Users/arthu/AppData/Local/Program
 s/MiKTeX/fonts/type1/bera/fvsr8a.pfb>
-Output written on report.pdf (3 pages, 7513422 bytes).
+Output written on report.pdf (4 pages, 7529010 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 13 named destinations out of 1000 (max. 500000)
- 77872 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 109 PDF objects out of 1000 (max. 8388607)
+ 22 named destinations out of 1000 (max. 500000)
+ 77896 words of extra memory for PDF output out of 89155 (max. 10000000)
 
