@@ -50,7 +50,7 @@ header-includes:
 ---
 
 ```{r , echo = FALSE, message = FALSE, warning = FALSE}
-# Libraries
+
 
 library(tidyverse)
 library(readr)
@@ -59,7 +59,7 @@ library(stargazer)
 library(PerformanceAnalytics)
 library(tidyverse)
 library(bookdown)
-library(plotly)
+
 
 ```
 
@@ -114,7 +114,7 @@ rec_plot <- rec_tab %>%
        y = "Recovery count", 
        title = "Recovery number in Australia in 2020")
 
-ggplotly(rec_plot)
+rec_plot
 ```
 ## Analysis 
 
@@ -127,7 +127,7 @@ Figure\@ref(fig:figrec1) shows that the number of recoveries from 2020.3 to 2021
 rec_rate_tab <- rec_clean %>% 
   group_by(date) %>% 
   summarise(rec_rate = Recoveries/(Recoveries + `Active Cases`))
-  #mutate(Death_rec_ratio = str_replace(Death_rec_ratio, "Inf", "0"))
+
 
 ```
 
@@ -142,7 +142,7 @@ rec_rate_plot <- rec_rate_tab %>%
        y = "Recovery rate", 
        title = "Recovery rate in Australia in 2020")
 
-ggplotly(rec_rate_plot)
+rec_rate_plot
 ```
 ## Analysis
 
@@ -167,7 +167,7 @@ ratio_plot <- ratio_tab %>%
        y = "Recovery-Death ratio", 
        title = "Recovery-Death ratio in Australia in 2020")
 
-ggplotly(ratio_plot)
+ratio_plot
 ```
 
 
