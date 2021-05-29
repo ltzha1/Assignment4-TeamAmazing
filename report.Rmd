@@ -222,6 +222,24 @@ ratio_tab <- rec_clean %>%
 
 ```
 
+```{r figrec3, fig.cap = "Recovery-Death ratio in Australia in 2020", eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ratio_plot <- ratio_tab %>%
+  ggplot(aes(x = date, y = rec_Death_ratio)) + 
+  geom_point(alpha = 0.1) + 
+  geom_line() + 
+  theme_bw() + 
+  labs(x= "Month", 
+       y = "Recovery-Death ratio", 
+       title = "Recovery-Death ratio in Australia in 2020")
+
+ratio_plot
+```
+
+
+## Analysis
+
+Figure\@ref(fig:figrec3) demonstrates the ratio of total recoveries and total deaths, which it kept zero in the earlier Mar because An early outbreak in March left the recovery rate at zero and the death rate rising. As the ratio continued rising until July(70), then it started dropping which means that as the active cases decreased, the recoveries number became less. 
+
 
 \section*{Transmission sources of daily cases in Australia}
 ```{r message=FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
@@ -265,23 +283,7 @@ Luckily, there are no more local community spread in Australia from 20 April 202
 
 
 
-```{r figrec3, fig.cap = "Recovery-Death ratio in Australia in 2020", eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-ratio_plot <- ratio_tab %>%
-  ggplot(aes(x = date, y = rec_Death_ratio)) + 
-  geom_point(alpha = 0.1) + 
-  geom_line() + 
-  theme_bw() + 
-  labs(x= "Month", 
-       y = "Recovery-Death ratio", 
-       title = "Recovery-Death ratio in Australia in 2020")
-
-ratio_plot
-```
-
-
-## Analysis
-
-Figure\@ref(fig:figrec3) demonstrates the ratio of total recoveries and total deaths, which it kept zero in the earlier Mar because An early outbreak in March left the recovery rate at zero and the death rate rising. As the ratio continued rising until July(70), then it started dropping which means that as the active cases decreased, the recoveries number became less. 
+\section*{Vaccination}
 
 ## Vaccination Rates
 ```{r}
