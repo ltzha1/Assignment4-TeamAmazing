@@ -69,6 +69,68 @@ library(bookdown)
 
 \section*{Total cases in Australia}
 
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+covid <- read_csv("Data/All.csv")
+```
+
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+covid_long <- covid %>% 
+  mutate(date = as.Date(date, '%d-%b')) %>% 
+  pivot_longer(cols = -date,
+             names_to = "state",
+             values_to = "Count") 
+  dates <- unique(sort(covid_long$date)) 
+  covid_long$date <- factor(covid_long$date, ordered = T)
+```
+
+# Total COVID 19 cases from each state in the last 28 days
+
+```{r table1, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+table <- covid_long %>% 
+  group_by(state) %>% 
+  summarise(total = sum(Count)) %>% 
+  arrange(desc(total))
+
+knitr::kable(table, caption = "Total cases in 28 days") %>% 
+kable_classic(full_width = F, html_font = "Cambria")
+```
+
+## Analysis 
+
+table \@ref(tab:table1) shows the total number of COVID 19 cases from all the states in Australia in the last 28 days. It clearly shows that in the last 28 days New South Wales (NSW) has added the most number of cases with total of 211 cases. Compared to other states they only at 50's cases with Australian Capital Territory (ACT) and Tasmania (TAS) only added 1 and 0 cases. It reflects that NSW has been struggling. The data was downloaded as in 18 of May 2021, they really need to increase their attention in order to contain the virus outbreak. 
+
+# Highest and lowest COVID 19 cases in Australia 
+
+```{r, fig.width=10, figref1, fig.cap = "Highest and lowest COVID 19 cases in Australia", eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ggplot(covid_long,
+       aes(x = reorder(date, -Count),
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si())  +xlab("date") + ggtitle("Highest and lowest COVID 19 cases in Australia")
+
+```
+
+## Analysis 
+
+Figure \@ref(fig:figref1) showing the highest  to lowest cases of COVID 19 the X axis acts recorded the date on when the case was recorded. At glance at the 23 of April 2021 the day where Australia adds the higest total cases with NSW is the highest contributor, and the lowest cases was recorded at 14 May 2021.
+
+# COVID 19 cases in Australia in the last 28 days
+
+```{r figref2, fig.cap = "Daily cases in Australia in the last 28 days", eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+ ggplot(covid_long,
+       aes(x = date,
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si()) + ggtitle("Daily cases in Australia in the last 28 days")
+```
+
+## Analysis 
+
+\@ref(fig:figref2) showing the COVID 19 cases trends from 16 of April to 18 of May 2021. During the first few weeks the cases has rises and reaches it's peak on the 22 April 2021. 2 days later it drops and suddenly there has been an increase again. But overall during the last 28 days Australia has shown a great way to contain the outbreak on the first week which showing the efficiency of the government rules and regulation. 
 
 \section*{Recovery}
 
