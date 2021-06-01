@@ -1,0 +1,402 @@
+---
+title: "COVID 19 Analysis in Australia"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(ggpubr)
+library(flexdashboard)
+library(readxl)
+library(plotly)
+library(kableExtra)
+library(gridExtra)
+library(bookdown)
+library(sf)
+library(hrbrthemes)
+library(viridis)
+```
+
+
+# Introduction
+
+[Covid19 data Australia](https://www.covid19data.com.au) is the source where we get all the data. We are analyzing the cases as in 18 of May 2021 where we download all the data needed. We divided our analysis to 4 part, firstly we are going to talk about the total cases within the last 28 days in Australia, secondly we are going to talk about the cases we also analyze the how many people recover due to the disease, after looking at the transmission sources in Australia, and lastly we talked about the vaccination program which starts from February to 18 May.
+
+The purpose of this report is to analyze how well Australia is handling the pandemic, we decided to do this because we all aware that the pandemic is keep on heating from time to time so it's very important for us international students who is studying in Australia be aware of what is happening in Australia.
+
+***
+
+**TEAM AMAZING MEMBERS**
+
+|Name	          |Email Id	                  |Student Id  |
+|---------------|:-------------------------:|----------  |
+|Arthur Andersen|awid0001@student.monash.edu| 28361148   |
+|Lintian Zhang  |ltzha1@student.monash.edu  | 24533815   |   
+|Hanchen Wang   |hwan143@student.monash.edu | 30704456   |
+|Ying Zou       |yzou0014@student.monash.edu| 30386160   |  
+ 
+***
+
+# part 1
+
+Column {.tabset data-width=700}
+-----------------------------------------------------------------------
+<b><font face="Georgia" size="5em" color="#063c91">Total cases in Australia in last 28 days</font></b>
+
+### Highest to lowest case
+```{r}
+covid <- read_csv("Data/All.csv")
+```
+
+```{r}
+covid_long <- covid %>% 
+  mutate(date = as.Date(date, '%d-%b')) %>% 
+  pivot_longer(cols = -date,
+             names_to = "state",
+             values_to = "Count") 
+  dates <- unique(sort(covid_long$date)) 
+  covid_long$date <- factor(covid_long$date, ordered = T)
+```
+
+```{r, fig.width=10}
+a <- ggplot(covid_long,
+       aes(x = reorder(date, -Count),
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si())  +xlab("date") + ggtitle("overview of cases in Australia in last 28 days")
+
+ggplotly(a)
+
+```
+
+### Trends in the last 28 days
+```{r}
+b <- ggplot(covid_long,
+       aes(x = date,
+y = Count, fill = state)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si()) + ggtitle("trends in the last 28 days")
+
+ggplotly(b)
+```
+
+
+Row {data-height=200}
+-----------------------------------------------------------------------
+```{r}
+table <- covid_long %>% 
+  group_by(state) %>% 
+  summarise(total = sum(Count)) %>% 
+  arrange(desc(total))
+
+knitr::kable(table, caption = "Total cases in 28 days") %>% 
+kable_classic(full_width = F, html_font = "Cambria")
+```
+
+### Analysis
+
+**Highest to lowest total case** 
+
+-	23 April is the highest Covid total case.
+-	14 May is the lowest Covid total case.
+
+**Trends in the last 28 days**
+
+-	From 16 April to 22 April the case is increasing and reaching its peak on 23 of  April.
+-	After a couple of days later on the 25 April it falls with Western Australia and Queensland adding 2 cases, while the rest of the state are adding 1 case.
+
+**Table**
+
+-	The table showing total number of cases from each states in the last 28 days.
+-	New South Wales adds 211 cases.
+-	A big gap from NSW compared to other states.
+
+
+# part 2
+Column {.tabset data-width=700}
+-----------------------------------------------------------------------
+<b><font face="Georgia" size="5em" color="#063c91">Recovery</font></b>
+
+### Recoveries 
+```{r message=FALSE, warning=FALSE}
+rec <- read_csv(here::here("Data/recovery.csv")) 
+
+rec <- rec[1:292,]
+```
+
+
+```{r}
+rec_clean <- rec %>% 
+  mutate(date = as.Date(date, '%d-%b')) %>% 
+  mutate(date = str_replace_all(date, "2021", "2020")) %>% 
+  mutate(date = as.Date(date, '%Y-%m-%d')) 
+
+  date <- unique(sort(rec$date))
+  rec$date <- factor(rec$date, ordered = T)
+  
+rec_clean[is.na(rec_clean)] <- 0
+```
+
+
+```{r}
+
+rec_tidy <-  rec_clean %>% 
+  filter(str_detect(date, "-01"))
+
+rec_tab <- rec_tidy  %>% 
+  group_by(date) %>% 
+  summarise(Recoveries)
+
+```
+
+```{r }
+rec_plot <- rec_tab %>%
+  ggplot(aes(x = date, y = Recoveries)) + 
+  geom_col() + 
+  theme_bw() +
+  labs(x= "Month", 
+       y = "Recovery count", 
+       title = "Recoveries number in 2020")
+
+rec_plot
+```
+
+### Recovery Rate
+
+```{r}
+rec_rate_tab <- rec_clean %>% 
+  group_by(date) %>% 
+  summarise(rec_rate = Recoveries/(Recoveries + `Active Cases`))
+  #mutate(Death_rec_ratio = str_replace(Death_rec_ratio, "Inf", "0"))
+
+```
+
+```{r}
+rec_rate_plot <- rec_rate_tab %>%
+  ggplot(aes(x = date, y = rec_rate)) + 
+  geom_point() + 
+  geom_line() + 
+  theme_bw() + 
+  #scale_x_continuous(breaks=seq(2020.03.)) +
+  labs(x= "Month", 
+       y = "Recovery rate", 
+       title = "Recovery rate in 2020")
+
+rec_rate_plot
+```
+
+### Recovery death ratio
+```{r}
+ratio_tab <- rec_clean %>% 
+  group_by(date) %>% 
+  summarise(rec_Death_ratio = Recoveries/Deaths)
+  #mutate(Death_rec_ratio = str_replace(Death_rec_ratio, "Inf", "0"))
+
+```
+
+```{r}
+ratio_plot <- ratio_tab %>%
+  ggplot(aes(x = date, y = rec_Death_ratio)) + 
+  geom_point() + 
+  geom_line() + 
+  theme_bw() + 
+  #scale_x_continuous(breaks=seq(2020.03.)) +
+  labs(x= "Month", 
+       y = "Recovery-Death ratio", 
+       title = "Recovery-Death ratio in 2020")
+
+ratio_plot
+```
+
+
+Row {data-height=200}
+-----------------------------------------------------------------------
+
+### Analysis
+
+**Recoveries number**
+
+The chart shows that the number of recoveries from 2020.3 to 2021.5. It is not hard to find there was a slow climb before 2020.07(248918), after which a double recoveries appeared which is referred to the focus and good care on COVID-19 among countries. Then the number kept constant with some fluctuation.
+
+**Recovery rate**
+
+The figure shows that the total recovery rate had an increase before 2020.6(95%), and a downward trend happened due to the decreasing active cases as well as increasing recoveries. However, the recovery rate continued to climbing from 2020.8(71%) and reached at almost 99% after 2020.11 until now.
+
+**Recovery death ratio**
+
+The graph demonstrates the ratio of total recoveries and total deaths, which it kept zero in the earlier Mar because An early outbreak in March left the recovery rate at zero and the death rate rising. As the ratio continued rising until July(70), then it started dropping which means that as the active cases decreased, the recoveries number became less. 
+
+# part 3
+Column 
+-----------------------------------------------------------------------
+<b><font face="Georgia" size="5em" color="#063c91">Transmissions sources in Australia</font></b>
+
+### Overview of types of transmission
+```{r}
+transmission <- read_csv("Data/National.csv")
+```
+
+```{r}
+transmission <- transmission %>% 
+  mutate(date = as.Date(date, '%d-%b'))
+```
+
+```{r}
+transmission_long <- transmission %>% 
+  mutate(date = as.Date(date, '%d-%b')) %>% 
+  pivot_longer(cols = -date,
+             names_to = "source",
+             values_to = "Count")
+dates <- unique(sort(transmission_long$date)) 
+transmission_long$date <- factor(transmission_long$date, ordered = T)
+ 
+```
+
+```{r, transmission, fig.align = 'center', fig.width=10, echo=FALSE}
+  
+c <- ggplot(transmission_long, aes(x = date,
+y = Count, fill = source)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) +
+expand_limits(x = c(0, NA), y = c(0, NA)) + 
+scale_y_continuous(labels = scales::label_number_si())+
+  ggtitle("Transmission sources of daily cases 20 April 2021 - 18 May 2021") +
+  labs(x= "Date", 
+       y = "Number of cases")
+
+ggplotly(c)
+```
+
+### Analysis 
+
+**graph** 
+
+- The figure above indicates that the most of transmissions were from overseas. Especially, there were more than 35 cases from overseas recorded and one case was due to the interstate travel in 23 April. Only One case is under investigation which has been recorded in 5 May.
+- Luckily, there are no more local community spread in Australia from 20 April 2021 to 18 May 2021.
+
+# part 4
+Column {.tabset data-width=700}
+-----------------------------------------------------------------------
+<b><font face="Georgia" size="5em" color="#063c91">Vaccination in Australia</font></b>
+
+### Graph 1
+```{r}
+library(hrbrthemes)
+vaccine <- read_csv(here::here("Data/Total doses.csv"))
+```
+
+```{r} 
+ vaccine_long <- vaccine %>% 
+  mutate(date=as.Date(date,'%d-%b'))
+dates <- unique(sort(vaccine_long$date))
+vaccine_long$date <- factor(vaccine_long$date,ordered=T)
+```
+
+```{r,fig.align = "center"}
+  plot <- ggplot(vaccine_long,
+         aes(x=date,y=`Per 100 people (right axis)`))+
+  geom_point(size=2,alpha=0.3,color='#b3699f')+
+  ggtitle(" Vaccination Rates Over Time")+ 
+  ylab("vaccination Rates(per 100 people)")+
+  xlab("Date")+
+  theme(plot.title = element_text(h = 0.5))+
+  scale_color_manual(values = colors)+
+    theme_ipsum() + theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))
+
+
+ggplotly(plot)
+```
+
+### Graph 2
+
+```{r message=FALSE, warning=FALSE}
+ z <- ggplot(vaccine_long, 
+       aes(x = date,
+           y = `Total doses (left axis)`)) +
+  geom_col() + 
+    ggtitle("Increase in vaccination coverage over time") +
+    xlab("Date") +
+    ylab("Vaccine") +
+    theme_ipsum() + theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))+ theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1)) 
+
+ggplotly(z)
+```
+
+Row {data-height=200}
+-----------------------------------------------------------------------
+
+### Analysis
+
+**graph 1**
+
+The graph shows a general upward trend in vaccination, with the vaccination rate starting to show a faster increase in early April. The vaccination rate grows faster and faster over time. The number of vaccinations reached 12.39% on May 18. The increase in vaccination rates illustrates the importance the government places on the outbreak.
+
+
+**graph 2**
+
+We can see from the graph that the number of inoculations continues to grow, from 20 people on February 21 to 3,183,324 people on May 18. The rate of growth has been accelerating since the beginning of April.
+
+
+
+# Conclusion and References
+
+### Conclusion
+
+Given the analysis above, the number of the confirmed cases and their sources were very stable. Besides, with the high recovery rate and more people are taking the vaccines, it can be proved that the reactions Australian government made were effective.
+
+### Data
+
+COVID-19 in Australia. (2021). Retrieved 18 May 2021, from https://www.covid19data.com.au/
+
+
+### Software
+
+R Core Team (2020). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+  
+### Packages
+
+Alboukadel Kassambara (2020). ggpubr: 'ggplot2' Based Publication Ready Plots. R package version 0.4.0. https://CRAN.R-project.org/package=ggpubr
+
+Bob Rudis (2020). hrbrthemes: Additional Themes, Theme Components and Utilities for 'ggplot2'. R package version 0.8.0. https://CRAN.R-project.org/package=hrbrthemes
+
+C. Sievert. Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman and Hall/CRC Florida, 2020.
+
+Hadley Wickham and Jennifer Bryan (2019). readxl: Read Excel Files. R package version 1.3.1. https://CRAN.R-project.org/package=readxl
+  
+Hao Zhu (2021). kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R package version 1.3.4. https://CRAN.R-project.org/package=kableExtra
+
+Müller, K. (2020). here: A Simpler Way to Find Your Files. R package version 1.0.1. https://CRAN.R-project.org/package=here
+
+Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data. The R Journal 10 (1), 439-446, https://doi.org/10.32614/RJ-2018-009
+
+Richard Iannone, JJ Allaire and Barbara Borges (2020). flexdashboard: R Markdown Format for Flexible Dashboards. R package version 0.5.2. https://CRAN.R-project.org/package=flexdashboard
+
+Simon Garnier, Noam Ross, Robert Rudis, Antônio P. Camargo, Marco Sciaini, and Cédric Scherer (2021). Rvision - Colorblind-Friendly Color Maps for R. R package version 0.6.0.
+
+Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
+
+Yihui Xie (2021). bookdown: Authoring Books and Technical Documents with R Markdown. R package version 0.22.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
