@@ -287,37 +287,46 @@ Luckily, there are no more local community spread in Australia from 20 April 202
 
 \section*{Vaccination}
 
-# Vaccination Rates
-```{r}
+## Vaccination Rates
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+library(hrbrthemes)
 vaccine <- read_csv(here::here("Data/Total doses.csv"))
 ```
 
-```{r}
- vaccine_long <- vaccine%>%
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE} 
+ vaccine_long <- vaccine %>% 
   mutate(date=as.Date(date,'%d-%b'))
 dates <- unique(sort(vaccine_long$date))
 vaccine_long$date <- factor(vaccine_long$date,ordered=T)
 ```
 
-## Analysis
-
-The graph \@ref(fig:Figplot) shows a general upward trend in vaccination, with the vaccination rate starting to show a faster increase in early April. The vaccination rate grows faster and faster over time. The number of vaccinations reached 12.39% on May 18. The increase in vaccination rates illustrates the importance the government places on the outbreak.
-
-
-# Vaccination Coverage
-
-```{r,fig.align = "center", fig.cap = "Age Distribution In The Electoral Divisions"}
-  plot <- ggplot(vaccine_long,
+```{r FigRefplot, fig.cap = "Vaccination Rates Over Time", warning = FALSE, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE }
+  ggplot(vaccine_long,
          aes(x=date,y=`Per 100 people (right axis)`))+
-  geom_point()+
- theme(axis.text.x = element_text(angle=90, hjust=1))
-
-
-plot
+  geom_point(size=2,alpha=0.3,color='#b3699f')+
+  ylab("vaccination Rates(per 100 people)")+
+  xlab("Date")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))
 ```
 
 
-## Analysis
+
+The graph \@ref(fig:FigRefplot) shows a general upward trend in vaccination, with the vaccination rate starting to show a faster increase in early April. The vaccination rate grows faster and faster over time. The number of vaccinations reached 12.39% on May 18. The increase in vaccination rates illustrates the importance the government places on the outbreak.
+
+
+
+## Vaccination Coverage
+
+```{r FigRefz, fig.align = "center",fig.cap = "Increase in vaccination coverage over time",message=FALSE, warning=FALSE, eval=TRUE, echo=FALSE}
+ggplot(vaccine_long, 
+       aes(x = date,
+           y = `Total doses (left axis)`)) +
+  geom_col()+
+    xlab("Date") +
+    ylab("Vaccine") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust = 1))
+```
+
 
 We can see from the graph \@ref(fig:FigRefz) that the number of inoculations continues to grow, from 20 people on February 21 to 3,183,324 people on May 18. The rate of growth has been accelerating since the beginning of April.
 
